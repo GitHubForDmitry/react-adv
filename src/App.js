@@ -3,7 +3,7 @@ import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 import {nanoid} from "nanoid";
 import FilterButton from "./components/FilterButton";
-
+import {ButtonGroup, Container} from "react-bootstrap";
 const Tasks = [
     {id: 'todo-1', name: 'learn JavaScript', completed: false},
     {id: 'todo-2', name: 'learn React', completed: false},
@@ -51,16 +51,19 @@ function App(props) {
 
     const filterList = (
         Object.keys(filterButtons).map(name => (
-            <FilterButton setFilter={setFilter} pressed={name === filter} name={name} />
+            <FilterButton key={name} setFilter={setFilter} pressed={name === filter} name={name} />
         ))
 
     )
     return (
-        <div>
-            {filterList}
+        <Container className="align-content-center m-2">
+            <h1 className="text-primary">Filter Tasks</h1>
+            <ButtonGroup className="mr-1">
+                {filterList}
+            </ButtonGroup>
             <TodoForm addTask={addTask} />
             <TodoList tasks={tasks} editTask={editTask} filter={filter} filterButtons={filterButtons} completedTask={completedTask}/>
-        </div>
+        </Container>
     );
 }
 
