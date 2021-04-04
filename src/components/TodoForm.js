@@ -10,6 +10,7 @@ function TodoForm({addTask}) {
         addTask(newTask);
         setNewTask('')
     }
+
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Row className="align-items-center mb-2">

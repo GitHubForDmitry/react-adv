@@ -1,15 +1,10 @@
 import React from 'react';
 import TodoForm from "./components/TodoForm";
-import TodoList from "./components/TodoList";
-import {nanoid} from "nanoid";
 import FilterButton from "./components/FilterButton";
 import {ButtonGroup, Container} from "react-bootstrap";
-const Tasks = [
-    {id: 'todo-1', name: 'learn JavaScript', completed: false},
-    {id: 'todo-2', name: 'learn React', completed: false},
-    {id: 'todo-3', name: 'learn Redux', completed: true},
-    {id: 'todo-4', name: 'learn Graphql', completed: false},
-];
+import {addTask, deleteTask, editThisTask, toggleTask} from "./store/actions";
+import {connect} from "react-redux";
+import TodoList from "./components/TodoList";
 
 const filterButtons = {
     All: () => true,
@@ -18,36 +13,8 @@ const filterButtons = {
 }
 function App(props) {
 
-    const [tasks, setTasks] = React.useState(Tasks);
     const [filter, setFilter] = React.useState('All');
-
-    function addTask(name) {
-        const newTask = {id: `todo-${nanoid()}`, name, completed: false};
-
-        setTasks([...tasks, newTask]);
-    }
-
-    function editTask(id, newName) {
-        const newTasks = tasks.map(task => {
-            if (task.id === id) {
-                return {...task, name: newName}
-            }
-            return  task;
-        })
-
-        setTasks(newTasks);
-    }
-
-    function completedTask(id) {
-        const newTasks = tasks.map(task => {
-            if (task.id === id) {
-                return {...task, completed: !task.completed}
-            }
-            return  task;
-        })
-
-        setTasks(newTasks);
-    }
+    const { addTask, deleteTask, editThisTask, toggleTask } = props;
 
     const filterList = (
         Object.keys(filterButtons).map(name => (
@@ -62,9 +29,16 @@ function App(props) {
                 {filterList}
             </ButtonGroup>
             <TodoForm addTask={addTask} />
-            <TodoList tasks={tasks} editTask={editTask} filter={filter} filterButtons={filterButtons} completedTask={completedTask}/>
+            <TodoList
+                editThisTask={editThisTask}
+                deleteTask={deleteTask}
+                filter={filter}
+                filterButtons={filterButtons}
+                toggleTask={toggleTask}
+            />
         </Container>
     );
 }
+
 
 export default App;
